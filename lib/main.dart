@@ -1,14 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tyba_test/screens/screens.dart';
+import 'package:tyba_test/services/restaurants_service.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const AppState());
+
+class AppState extends StatelessWidget {
+  const AppState({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => RestaurantsService()),
+      ],
+      child: MyApp(),
+    );
+  }
+}
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Tyba Test',
-      initialRoute: 'home',
+      initialRoute: 'login',
       routes: {
         'login': (_) => LoginScreen(),
         'sign-up': (_) => SignUpScreen(),

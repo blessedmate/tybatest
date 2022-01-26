@@ -7,11 +7,11 @@ class HistoryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('History'),
+        title: const Text('History'),
       ),
-      drawer: Menu(),
-      body: Center(
-        child: Text('Hola Mundo'),
+      drawer: const Menu(),
+      body: const Center(
+        child: Text('History...'),
       ),
     );
   }
