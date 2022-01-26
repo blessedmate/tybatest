@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:tyba_test/services/auth_service.dart';
 import 'package:tyba_test/widgets/input_field.dart';
 
 class SignUpScreen extends StatelessWidget {
-  const SignUpScreen({Key? key}) : super(key: key);
+  String name = '';
+  String email = '';
+  String password = '';
+
+  final authService = AuthService();
+
+  SignUpScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sign Up'),
+        title: const Text('Sign Up'),
         centerTitle: true,
       ),
       body: Column(
@@ -17,7 +24,7 @@ class SignUpScreen extends StatelessWidget {
           InputField(
             icon: const Icon(Icons.person),
             labelText: 'Name',
-            onChanged: (s) {},
+            onChanged: (n) => name = n,
           ),
           const SizedBox(height: 30),
 
@@ -25,7 +32,7 @@ class SignUpScreen extends StatelessWidget {
           InputField(
             icon: const Icon(Icons.email),
             labelText: 'Email',
-            onChanged: (s) {},
+            onChanged: (e) => email = e,
           ),
           const SizedBox(height: 30),
 
@@ -33,15 +40,21 @@ class SignUpScreen extends StatelessWidget {
           InputField(
             icon: const Icon(Icons.lock),
             labelText: 'Password',
-            onChanged: (s) {},
+            onChanged: (p) => password = p,
           ),
           const SizedBox(height: 30),
 
           // Sign up button
           MaterialButton(
-            onPressed: () {},
+            onPressed: () async {
+              final response = await authService.signUp(email, password);
+              response != null
+                  // TODO: SHOW ERROR WARNINGS
+                  ? print(response)
+                  : Navigator.pushReplacementNamed(context, 'home');
+            },
             child: const Text(
-              'Sign In',
+              'Sign Up',
               style: TextStyle(fontSize: 16),
             ),
             color: Colors.indigo,

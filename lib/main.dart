@@ -10,8 +10,8 @@ class MyApp extends StatelessWidget {
       title: 'Tyba Test',
       initialRoute: 'home',
       routes: {
-        'login': (_) => const LoginScreen(),
-        'sign-up': (_) => const SignUpScreen(),
+        'login': (_) => LoginScreen(),
+        'sign-up': (_) => SignUpScreen(),
         'home': (_) => const HomeScreen(),
         'history': (_) => const HistoryScreen(),
       },

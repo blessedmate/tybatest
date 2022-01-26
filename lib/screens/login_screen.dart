@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:tyba_test/services/auth_service.dart';
 import 'package:tyba_test/widgets/input_field.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  String name = '';
+  String email = '';
+  String password = '';
+
+  final authService = AuthService();
+
+  LoginScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +24,7 @@ class LoginScreen extends StatelessWidget {
           InputField(
             icon: const Icon(Icons.email),
             labelText: 'Email',
-            onChanged: (s) {},
+            onChanged: (e) => email = e,
           ),
           const SizedBox(height: 30),
 
@@ -25,13 +32,19 @@ class LoginScreen extends StatelessWidget {
           InputField(
             icon: const Icon(Icons.lock),
             labelText: 'Password',
-            onChanged: (s) {},
+            onChanged: (p) => password = p,
           ),
           const SizedBox(height: 30),
 
           // Sign in button
           MaterialButton(
-            onPressed: () {},
+            onPressed: () async {
+              final response = await authService.login(email, password);
+              response != null
+                  // TODO: SHOW ERROR WARNINGS
+                  ? print(response)
+                  : Navigator.pushReplacementNamed(context, 'home');
+            },
             child: const Text(
               'Sign In',
               style: TextStyle(fontSize: 16),
