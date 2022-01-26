@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 class AuthService {
   final String _urlBase = 'identitytoolkit.googleapis.com';
-  final String _firebaseToken = '';
+  final String _firebaseToken = 'AIzaSyBi1C9WqQOrzrnCeBuflQJgX-1dUEt69BY';
 
   /// Sends a request to Firebase to create a new user using email and password
   Future<String?> signUp(String email, String password) async {
