@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:tyba_test/db/db_provider.dart';
 import 'package:tyba_test/models/restaurant_response.dart';
 import 'package:http/http.dart' as http;
 
@@ -31,9 +32,10 @@ class RestaurantsService extends ChangeNotifier {
           RestaurantsResponse.fromMap(decodedResp);
       restaurants = restaurantsResponse.results!;
 
-      for (var element in restaurants) {
-        print(element.poi!.name);
-      }
+      // for (var element in restaurants) {
+      //   print(element.poi!.name);
+      // }
+      if (restaurants.isNotEmpty) DBProvider.db.saveQuery('$lat,$lon');
     } catch (e) {
       print(e);
     }

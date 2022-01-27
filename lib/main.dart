@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tyba_test/screens/screens.dart';
+import 'package:tyba_test/services/history_service.dart';
 import 'package:tyba_test/services/restaurants_service.dart';
 
 void main() => runApp(const AppState());
@@ -13,6 +14,7 @@ class AppState extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => RestaurantsService()),
+        ChangeNotifierProvider(create: (_) => HistoryService()),
       ],
       child: MyApp(),
     );
