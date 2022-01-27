@@ -5,12 +5,12 @@ import 'package:tyba_test/models/restaurant_response.dart';
 import 'package:http/http.dart' as http;
 
 class RestaurantsService extends ChangeNotifier {
-  List<RestaurantInfo>? restaurants = [];
+  List<RestaurantInfo> restaurants = [];
 
   final String _urlBase = 'api.tomtom.com';
 
   /// Sends a request to tomtom API to search for restaurants nearby given coordinates
-  Future<String?> searchRestaurantsByCoords(String lat, String lon) async {
+  Future searchRestaurantsByCoords(String lat, String lon) async {
     try {
       final Map<String, dynamic>? queryParameters = {
         'key': 'GpKgdkHwolF0DtJk1M3dwJ1Ah2NrB1Pz',
@@ -29,16 +29,15 @@ class RestaurantsService extends ChangeNotifier {
       // Convert the decoded response into the data model, then update restaurants list
       final RestaurantsResponse restaurantsResponse =
           RestaurantsResponse.fromMap(decodedResp);
-      restaurants = restaurantsResponse.results;
+      restaurants = restaurantsResponse.results!;
 
-      // Update UI
-      notifyListeners();
-
-      for (var element in restaurants!) {
+      for (var element in restaurants) {
         print(element.poi!.name);
       }
     } catch (e) {
       print(e);
     }
+    // Update UI
+    notifyListeners();
   }
 }

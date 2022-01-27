@@ -23,17 +23,16 @@ class HomeScreen extends StatelessWidget {
             SearchBar(),
             const SizedBox(height: 20),
             Expanded(
-              child: restaurantsProvider.restaurants!.isEmpty
+              child: restaurantsProvider.restaurants.isEmpty
                   ? const Center(
                       child: Text('Search for a restaurant'),
                     )
                   : ListView.builder(
-                      itemCount: restaurantsProvider.restaurants!.length,
-                      itemBuilder: (context, index) {
-                        return RestaurantTile(
-                            restaurant:
-                                restaurantsProvider.restaurants![index]);
-                      }),
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: restaurantsProvider.restaurants.length,
+                      itemBuilder: (_, index) => RestaurantTile(
+                          restaurant: restaurantsProvider.restaurants[index]),
+                    ),
             ),
           ],
         ),
@@ -52,14 +51,64 @@ class RestaurantTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      child: Text(restaurant.poi!.name!),
+      height: 70,
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              SizedBox(
+                width: 200,
+                child: Text(
+                  restaurant.poi!.name!,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 16),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const Expanded(child: SizedBox()),
+              GestureDetector(
+                child: const Icon(
+                  Icons.phone,
+                  color: Colors.indigo,
+                ),
+                onTap: () {
+                  showDialog(
+                    builder: (BuildContext context) => AlertDialog(
+                      title: const Text('Phone Number'),
+                      content: Text(restaurant.poi!.phone ?? '-'),
+                    ),
+                    context: context,
+                  );
+                },
+              ),
+              // Text(
+              //   restaurant.poi!.phone ?? '-',
+              //   style: TextStyle(fontSize: 16),
+              // ),
+            ],
+          ),
+          const SizedBox(height: 5),
+          Row(
+            children: [
+              const Icon(Icons.location_on_outlined),
+              Expanded(
+                child: Text(
+                  '${restaurant.address!.streetName ?? '-'} ${restaurant.address!.streetNumber ?? '-'}',
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
+          const Divider(thickness: 1),
+        ],
+      ),
     );
   }
 }
 
 class SearchBar extends StatelessWidget {
-  final RestaurantsService restaurantsService = RestaurantsService();
   String lat = '';
   String lon = '';
 
@@ -69,6 +118,7 @@ class SearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final restaurantsProvider = Provider.of<RestaurantsService>(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Row(
@@ -89,7 +139,7 @@ class SearchBar extends StatelessWidget {
           ),
           TextButton(
             onPressed: () =>
-                restaurantsService.searchRestaurantsByCoords(lat, lon),
+                restaurantsProvider.searchRestaurantsByCoords(lat, lon),
             child: const Icon(Icons.search, color: Colors.indigo),
           ),
         ],
